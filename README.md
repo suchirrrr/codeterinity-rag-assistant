@@ -1,52 +1,97 @@
-# CodeTerinity v2 – Offline RAG-Based AI Study Assistant
+# CodeTerinity RAG Assistant
 
-CodeTerinity v2 is an offline AI study assistant that allows users to upload documents and ask questions based on the uploaded content.
-
-The project uses a Retrieval-Augmented Generation workflow to extract text from documents, split content into chunks, create local embeddings and retrieve relevant context for AI-generated answers.
+CodeTerinity is an offline Retrieval-Augmented Generation (RAG) study assistant. It lets a user build a local knowledge base from PDF files, retrieve relevant document chunks, and ask questions through a terminal or Streamlit interface.
 
 ## Project Overview
 
-The goal of this project was to build a beginner-friendly AI assistant that can answer questions from uploaded study materials without relying fully on cloud-based tools.
+This project explores how local AI tools can support document-based learning without sending study files to a cloud service. The assistant indexes PDF content into a local ChromaDB database and uses a local LM Studio model to generate answers.
 
-The system focuses on document-based question answering, semantic search and local AI interaction.
+![1782988741388](image/README/1782988741388.png)
+
+## Problem
+
+Students often have long lecture notes or PDFs and need a faster way to search, summarise, and ask questions about the material. A normal chatbot may not know the uploaded content, while cloud tools may not be suitable for private study documents.
+
+## Solution
+
+CodeTerinity extracts text from local PDFs, splits the content into chunks, stores embeddings in ChromaDB, and retrieves the most relevant chunks for each question. The local language model then answers using the retrieved context when it is relevant, and falls back to general local assistant behaviour when no useful document context is found.
 
 ## Key Features
 
-- PDF upload
-- Document text extraction
-- Text chunking
-- Local embeddings
-- Semantic search
-- Retrieval-Augmented Generation workflow
-- AI-based question answering
-- Streamlit user interface
-- Local-first design
+- PDF text extraction and chunking
+- Local embedding generation with SentenceTransformers
+- Persistent ChromaDB vector storage
+- Semantic search over uploaded study material
+- Retrieval-aware answers using LM Studio's local OpenAI-compatible API
+- Terminal chat interface
+- Streamlit interface for a more user-friendly workflow
+- Distance threshold to avoid using weak or unrelated document matches
 
 ## Tech Stack
 
 - Python
-- Streamlit
-- NumPy
-- JSON
-- MiniLM
+- ChromaDB
 - SentenceTransformers
-- Local LLM tools
-- RAG pipeline
-- Semantic search
+- pypdf
+- OpenAI Python client
+- LM Studio
+- Streamlit
 
-## Project Focus
+## My Contribution
 
-This project focused on building a practical AI tool using retrieval-based document understanding.
+- Built the PDF ingestion and chunking workflow.
+- Connected the assistant to a local ChromaDB vector database.
+- Implemented semantic retrieval using MiniLM embeddings.
+- Integrated LM Studio through an OpenAI-compatible local API.
+- Added both terminal and Streamlit-based interaction options.
+- Tuned the retrieval flow so the assistant only uses document context when it is relevant.
 
-The project strengthened skills in:
-- Python development
-- AI application design
-- Embedding models
-- Semantic search
-- RAG pipelines
-- Local AI tools
-- User interface design with Streamlit
+## How to Run
 
-## Learning Outcome
+1. Install dependencies:
 
-CodeTerinity v2 helped demonstrate how AI can be used to support learning through document-based question answering and local knowledge retrieval.
+```bash
+pip install chromadb sentence-transformers pypdf openai streamlit
+```
+
+2. Place PDF files in the configured data folder.
+
+The current code uses:
+
+```text
+C:\AI\assistant\data
+```
+
+3. Build the local memory database:
+
+```bash
+python assistant/build_memory.py
+```
+
+4. Start LM Studio locally and load the model configured in the code.
+
+The current code expects:
+
+```text
+http://127.0.0.1:1234/v1
+```
+
+5. Run the terminal assistant:
+
+```bash
+python assistant/codeterinity.py
+```
+
+Or run the Streamlit UI:
+
+```bash
+streamlit run assistant/ui_codeterinity.py
+```
+
+## What I Learned
+
+- How a RAG pipeline is structured from document ingestion to answer generation.
+- How embeddings and semantic search can improve document question answering.
+- How to connect a Python app to a local LLM through an OpenAI-compatible API.
+- How to balance document-grounded answers with fallback responses when no relevant context is found.
+- Why generated vector databases and source PDFs should be handled carefully before publishing a repository.

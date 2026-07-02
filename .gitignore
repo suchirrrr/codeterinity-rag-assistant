@@ -1,0 +1,16 @@
+
+# Local/generated RAG data
+assistant/data/*.pdf
+assistant/db/
+*.sqlite3
+
+# Python/local environment
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+
+# Local portfolio cleanup backup
+README.before-portfolio-cleanup.md
